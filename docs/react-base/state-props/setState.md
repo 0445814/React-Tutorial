@@ -8,7 +8,15 @@ setState方法是非同步執行的，它接收兩個參數。
 
 > callback：state更新後執行的回調函數。
 
-!> 注意：你不能在render方法中直接調用`setState`方法，否則會報錯。
+!> 注意：你不能在 render 方法中直接調用`setState`方法，否則會報錯。
+
+!> 以下取自 React 前端開發-同構應用與狀態管理
+
+> 不要在 render 中使用 `setState`，因為 `setState` 會觸發 render，如果 render 再觸發 `setState`，那麼會出現死迴圈，雖然 React 做了最佳化，不會卡死，但程式響應會非常慢，所以不要這麼做
+
+> 不要什麼都放進 state 中，只要這個資料不影響 UI 變化，就沒必要放進 state，以免不必要浪費。能夠放進語法作用域或 this 裡的，都不要放進 state。
+
+> 正確使用屬性和狀態，能夠讓程式設計更合理、性能更高、擴展性更好。
 
 ### 如何訪問setState ？
 
