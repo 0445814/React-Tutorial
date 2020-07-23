@@ -39,4 +39,9 @@ reducer 與 action 都需要開發者撰寫，reducer 接收以下兩個參數
 (previousState, action) => newState
 ```
 
-d
+reducer 命名由來，與 JS 的 reduce 方法有關(巧合?)。reduce 方法是一種運算合成，它經過遍歷、變形、累積，將陣列所有成員"累積"成為一個值。
+
+MDN 描述更為直接: 對累加器和陣列中每個值(左到右)應用一個函式，將其減少為單個值
+
+在 Redux 資料流中，reducer 在具備初始狀態下，每一次運算其實都是根據之前的狀態 (previous state) 和現有的 action (current action) 來更新 state 的，這個 state 可以理解為上文中累加器的結果。每次 reducer 被執行時，state 和 action 都被傳入，這個 state 根據 action 進行累加，進而回傳新的 state。符合一個 典型 reducer 函式用法和思想，也是函數式開發的一個重要概念和體現。
+
