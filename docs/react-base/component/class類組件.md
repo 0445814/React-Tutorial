@@ -26,7 +26,7 @@ class App extends React.Component {
 
 與`Component`相比，`PureComponent`做了一些簡單最佳化，性能更好。
 
-!> 以下取自 React 前端開發-同構應用與狀態管理
+?> 以下取自 React 前端開發-同構應用與狀態管理
 
 > PureComponent 是 React 15.3 引入的全新元件基礎類別，在 React 內部 PureComponent 繼承自 Component，並將 isPureReactComponent 屬性設定為 true。在 React 內部是以 isPureReactComponent 
 來區分是否為 PureComponent

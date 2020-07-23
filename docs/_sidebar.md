@@ -93,3 +93,6 @@
   - [圖解react生態系統](react-Advanced/ecosystem/圖解react生態系統.md)
   - [案例1：使用工具庫](react-Advanced/ecosystem/案例1：使用工具庫.md)
   - [案例2：使用UI庫](react-Advanced/ecosystem/案例2：使用UI庫.md)
+
+-  Redux
+  - [Redux 簡介](redux/Redux簡介.md)
