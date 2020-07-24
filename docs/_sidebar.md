@@ -96,3 +96,4 @@
 
 -  Redux
   - [Redux 簡介](redux/Redux簡介.md)
+  - [Redux 基本使用與實踐](redux/Redux基本使用與實踐.md)
