@@ -1,6 +1,6 @@
-##### 1，回调式异步处理
+##### 1，回調式非同步處理
 ```js  
-// 回调式异步处理
+// 回調式非同步處理
 ajax('http://url-1', data1, function (err, result) {
     if (err) {
         return handle(err);
@@ -21,9 +21,9 @@ ajax('http://url-1', data1, function (err, result) {
     });
 });
 ```  
-##### 2，promise异步处理
+##### 2，promise非同步處理
 ```js
-// promise异步处理
+// promise非同步處理
 fetch('http://url-1',args) 
  .then(data1=>{
     // data1
@@ -39,10 +39,10 @@ fetch('http://url-1',args)
  ...
 
 ```
-##### 3，generator异步处理
+##### 3，generator非同步處理
 ```js
-// generator异步处理。
-// 以同步的效果处理异步(实际上还是异步的)
+// generator非同步處理。
+// 以同步的效果處理非同步(實際上還是非同步的)
 function* (){
   try {
     r1 = yield ajax('http://url-1', data1);
@@ -55,10 +55,10 @@ function* (){
   }
 }
 ```
-##### 4，async/await异步处理
+##### 4，async/await非同步處理
 ```js
-// 终极解决方案。
-// 以同步的效果处理异步(实际上还是异步的)
+// 終極解決方案。
+// 以同步的效果處理非同步(實際上還是非同步的)
 async function (){
   try {
     r1 = await ajax('http://url-1', data1);

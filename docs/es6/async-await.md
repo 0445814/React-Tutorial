@@ -1,37 +1,37 @@
-# async/await 异步终结者
-ES2017(ES8) 标准引入了 `async 函数`，使得异步操作变得更加方便。  
+# async/await 非同步終結者
+ES2017(ES8) 標準引入了 `async 函數`，使得非同步操作變得更加方便。  
 
-`async / await`对应的是generator的`function* / yield`,它是generator的语法糖，但比generator更友好，async内置执行器，灵活简单。
+`async / await`對應的是generator的`function* / yield`,它是generator的語法糖，但比generator更友好，async內建執行器，靈活簡單。
 
-### 一，基本定义      
-async函数的定义很简单，只需要在函数声明前加`async`关键词即可。async函数内可使用await关键词来处理异步。
+### 一，基本定義      
+async函數的定義很簡單，只需要在函數聲明前加`async`關鍵字即可。async函數內可使用await關鍵字來處理非同步。
 ```js 
 async function fn() {  
-   const result = await promise ; // await后面通常需要接promise，比如fetch、axios请求等
+   const result = await promise ; // await後面通常需要接promise，比如fetch、axios請求等
 }    
 
-// 调用  
+// 調用  
 fn();
 ```    
-> 当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。  
+> 當函數執行的時候，一旦遇到await就會先返回，等到非同步操作完成，再接著執行函數體內後面的語句。  
 
-### 二，async函数多种写法  
+### 二，async函數多種寫法  
 
 ```js  
 
-// 1，函数声明
+// 1，函數聲明
 async function fn(){
    // Todo
 }
 
 
-// 2，函数表达式
+// 2，函數表達式
 const foo = async function (){
     // Todo
 };
 
 
-// 3，对象的方法
+// 3，對象的方法
 let obj = { 
     name:"ben",
     age: 23,
@@ -42,7 +42,7 @@ let obj = {
 obj.fn();
 
 
-// 4，Class类的方法
+// 4，Class類的方法
 class Post {
 
   async getPost(id) {
@@ -54,7 +54,7 @@ const Posts = new Post();
 Posts.getPost('id');  
 
 
-// 5，箭头函数
+// 5，箭頭函數
 const fn = async () => {
     // ...
 };
@@ -76,36 +76,36 @@ async function getPost() {
     ...
   }
   catch(err){
-    // 捕获异常
+    // 捕獲異常
     console.log(err);  
   }
 }    
 
-// 调用  
+// 調用  
 getPost();
 ```    
 ### 三，返回promise  
-async函数返回一个 Promise 对象。
+async函數返回一個 Promise 對象。
 
-> async函数内部return语句返回的值，会成为then方法回调函数的参数。    
+> async函數內部return語句返回的值，會成為then方法回調函數的參數。    
 
-如果await后面的异步操作出错，那么async函数返回的 Promise 对象就和被reject。
+如果await後面的非同步操作出錯，那麼async函數返回的 Promise 對象就和被reject。
 
 ```js
 async function getPost() {  
   try {
 
-    return await fetch('./post.json'); // 返回await结果
+    return await fetch('./post.json'); // 返回await結果
 
     // 其他工作 
   }
   catch(err){
-    // 异常捕获
+    // 異常捕獲
     console.log(err);  
   }
 }    
 
-// 调用  
+// 調用  
 getPost()
  .then(res=>{
     return res.json();
@@ -119,7 +119,7 @@ getPost()
 ```    
 
 
-### 四，匿名自执行async  
+### 四，匿名自執行async  
 ```js
 (async () => {
     const response = await fetch('./post.json').then(res=>res.json());
