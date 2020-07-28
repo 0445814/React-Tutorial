@@ -107,8 +107,8 @@ action 描述一種變化，並攜帶變化的資料資訊。真正執行這種�
 ```js
 const updateStateTree = function (previousState = {}, action) {
   // ...
-  return newState
-}
+  return newState;
+};
 ```
 
 一個完整的 reducer 函式可能需要對多個 action 作處理，所以在開發時往往使用 switch-case 或 if-else 來撰寫:
@@ -116,15 +116,16 @@ const updateStateTree = function (previousState = {}, action) {
 ```js
 const updateStateTree = function (previousState = {}, action) {
   switch (action.type) {
-    case 'case1':
-    return newState1;
-    case 'case2':
-    return newState2;
+    case "case1":
+      return newState1;
+    case "case2":
+      return newState2;
     default:
-    return previousState
+      return previousState;
   }
-}
+};
 ```
+
 !> 當無法匹配 action 時，預設回傳 previousState 參數，以保證其回傳值的穩定性
 
 !> updateStateTree 函式第一個參數是 previousState = {} 表示設定了預設值代表初始狀態，預設值是一個空物件，也可根據需要合理進行設定
@@ -134,3 +135,145 @@ const updateStateTree = function (previousState = {}, action) {
 當通過 Redux 的 createStore 方法建立一個 store 實例之後，便可使用 store.dispatch 派發一個描述變化的 action，這個 action 需要開發者根據業務自行撰寫。同時，執行 store.dispatch 後，Redux 會"自動"幫我們執行處理變化並更新資料的 reducer 函式。從 store.dispatch 到 reduce 的過程可以認為是 Redux 內部處理的，但具體 action 和 reducer 需要開發者撰寫，以完成應用開發。那麼當頁面狀態資料更新後，如何促使頁面發生 UI 更新呢 ? 這時就需要使用 store.subscribe(callback function) 方法訂閱資料的更新，並由 callback function 完成 UI 更新。
 
 ## 合理分割 reducer 函式
+
+當業務變得複雜，action 會越來越多，reducer 也將變得龐大，這對於開發體驗與維護都是難以接受的
+
+````js
+const fatReducer = function (previousState = {}, action) {
+  switch (action.type) {
+    case: 'case1'
+    // do something ...
+    return newState1;
+    case: 'case2'
+    // do something ...
+    return newState2;
+    ......
+    ......
+    default:
+      return previousState;
+  }
+}
+
+為了解決這個問題，Redux 提供一個工具函式: combineReducers，可以對 reducer 函式進行分割，最後在合併一個完整的 reducer。
+
+它接收一個 JS 物件類型參數，這個物件的鍵值分別為頁面資料狀態分片和子 reducer 函式，最後回傳一個合併歸一的 finalReducer。
+
+```js
+let finalReducer = combineReducers({reducers});
+````
+
+例如，頁面資料狀態存在三種資料狀態: data1、data2、data3，相互獨立而不關聯
+
+```js
+state = {
+  data1: {
+    ...
+  },
+ data2: {
+    ...
+  },
+  data3: {
+    ...
+  },
+}
+```
+
+接著把三個狀態分割成三個小的 reducer 函式: reducer1、reducer2、reducer3
+
+```js
+const reducer1 = function (previousState = {}, action) {
+  // 根據 action 和 state.data1 計算產生新的 state.data1
+  return state.data1;
+};
+
+const reducer2 = function (previousState = {}, action) {
+  // 根據 action 和 state.data2 計算產生新的 state.data2
+  return state.data2;
+};
+
+const reducer3 = function (previousState = {}, action) {
+  // 根據 action 和 state.data3 計算產生新的 state.data3
+  return state.data3;
+};
+```
+
+最後，利用 combineReducer 將三個子 reducer 函式合併並回傳完整的 finalReducer
+
+```js
+const { combineReducers } = Redux;
+const finalReducer = combineReducers({
+  data1: reducer1,
+  data2: reducer2,
+  data3: reducer3,
+});
+```
+
+在 ES6 開發環境下，常用作法是令子 reducer 函式名稱與資料狀態命名一致，即將 reducer1、reducer2 和 reducer3 分別命名為 data1、data2 和 data3。
+
+```js
+const { combineReducers } = Redux;
+const finalReducer = combineReducers({
+  data1: data1,
+  data2: data2,
+  data3: data3,
+});
+```
+
+於是，可簡寫成:
+
+```js
+const finalReducer = combineReducers({ data1, data2, data3 });
+```
+
+總之，合併為一個 finalReducer，就可單獨維護這三個子 reducer，進而提升維護效率。
+
+回頭看一下 combineReducers 方法，它接收一個 Object 類型參數，這個參數定義了頁面資料狀態中不同的資料部分與更新這些資料的 reducer 含式之間的映射關係，並最終回傳一個合併完整的 reducer 函式。
+
+實際開發中，我們往往遵循這樣一個"最佳實踐"，將 reducer 命名為其處理的頁面狀態資料樹中的鍵值
+
+```js
+const state = {
+  data1: {},
+  data2: {},
+  data3: {},
+};
+```
+
+同時，reducer1、reducer2、reducer3 分別處理 data1、data2、data3，那我們就將 reducer 與其處理的 state 相同命名
+
+```js
+const data1 = function (state.data1, action) {
+  ...
+};
+
+const data2 = function (state.data2, action) {
+  ...
+};
+
+const data3 = function (state.data3, action) {
+  ...
+};
+```
+
+這樣做的好處是 reducer 命名更加規格和清晰，能夠準確表達其處理對應資料的意義，同時有利多人開發時的維護
+
+在 ES6 下，可簡寫為
+
+```js
+const finalReducer = combineReducers({
+  data1,
+  data2,
+  data3,
+});
+```
+
+記得建立 store 實例的方式嗎 ? 這時可簡寫成
+
+```js
+const store = createStore(combineReducers(...), preloadedState, enhancer);
+
+// or
+
+const store = createStore(finalReducers, preloadedState, enhancer)
+```
+
